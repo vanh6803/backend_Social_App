@@ -5,8 +5,12 @@ const accountSchema = new db.mongoose.Schema(
     email: { type: String, required: true },
     password: { type: String, required: true },
     name: { type: String },
+    avatar: { type: String },
+    bio: { type: String },
     token: { type: String },
-    isVerify: { type: Boolean },
+    isVerify: { type: Boolean, default: false },
+    confirmationCode: { type: String },
+    confirmationExpiration: { type: Date },
     friendRequests: [
       {
         type: db.mongoose.Schema.Types.ObjectId,

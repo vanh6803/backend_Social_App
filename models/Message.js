@@ -1,4 +1,4 @@
-const db = require("../config/ConnectDB");
+const db = require("../../config/ConnectDB");
 
 const messageSchema = new db.mongoose.Schema(
   {
