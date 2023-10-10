@@ -8,7 +8,7 @@ const path = require("path");
 // Set up multer storage and upload configuration
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "./public/images/users");
+    cb(null, "./public/images");
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
@@ -20,9 +20,10 @@ const upload = multer({ storage: storage });
 router.post("/register", controller.register);
 router.post("/login", controller.login);
 router.get("/logout", middleware.checkToken, controller.logout);
-router.get("/user/profile/:id", middleware.checkToken, controller.profile);
+router.get("/user/profile", middleware.checkToken, controller.profile);
 router.put(
-  "/user/editProfile/:id",
+  "/user/editProfile",
+  middleware.checkToken,
   upload.single("avatar"),
   controller.editProfile
 );

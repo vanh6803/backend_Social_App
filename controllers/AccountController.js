@@ -3,9 +3,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const fs = require("fs");
 const cloudinary = require("../config/SetupClouldinary");
-const { log } = require("console");
 
-exports.register = async (req, res, next) => {
+const register = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
@@ -40,7 +39,7 @@ exports.register = async (req, res, next) => {
   }
 };
 
-exports.login = async (req, res, next) => {
+const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
@@ -81,7 +80,7 @@ exports.login = async (req, res, next) => {
   }
 };
 
-exports.logout = async (req, res, next) => {
+const logout = async (req, res, next) => {
   try {
     // find user
     const user = await accountModel.account.findById(req.user._id);
@@ -101,10 +100,9 @@ exports.logout = async (req, res, next) => {
   }
 };
 
-exports.profile = async (req, res, next) => {
+const profile = async (req, res, next) => {
   try {
-    const user = await accountModel.account.findById({ _id: req.params.id });
-
+    const user = await accountModel.account.findById(req.user._id);
     if (!user) {
       return res.status(404).json({ code: 404, message: "user not found" });
     }
@@ -117,13 +115,13 @@ exports.profile = async (req, res, next) => {
   }
 };
 
-exports.editProfile = async (req, res, next) => {
+const editProfile = async (req, res, next) => {
   try {
     const dataUpdate = req.body;
     console.log(
       `dataUpdate-1: ${dataUpdate.avatar}, ${dataUpdate.name}, ${dataUpdate.bio} `
     );
-    const user = await accountModel.account.findById({ _id: req.params.id });
+    const user = await accountModel.account.findById(req.user._id);
     if (!user) {
       return res.status(404).json({ code: 404, message: "user not found" });
     }
@@ -142,7 +140,7 @@ exports.editProfile = async (req, res, next) => {
     console.log("dataUpdate: ", dataUpdate);
 
     await accountModel.account.findByIdAndUpdate(
-      { _id: req.params.id },
+      { _id: req.user._id },
       dataUpdate,
       { new: true }
     );
@@ -153,4 +151,15 @@ exports.editProfile = async (req, res, next) => {
     console.error(error.message);
     return res.status(400).json({ status: 400, message: error.message });
   }
+};
+
+const verifyEmail = (req, res, next) => {};
+
+module.exports = {
+  verifyEmail,
+  register,
+  login,
+  logout,
+  profile,
+  editProfile,
 };

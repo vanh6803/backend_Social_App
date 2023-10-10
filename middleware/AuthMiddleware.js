@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const accountModel = require("../models/Account");
 
-exports.checkToken = async (req, res, next) => {
+const checkToken = async (req, res, next) => {
   let header_token = req.header("Authorization");
   console.log(header_token);
   if (typeof header_token == "undefined" || typeof header_token == null) {
@@ -24,4 +24,8 @@ exports.checkToken = async (req, res, next) => {
     console.log(error);
     res.status(401).send({ code: 401, message: error.message });
   }
+};
+
+module.exports = {
+  checkToken,
 };
