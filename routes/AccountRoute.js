@@ -27,5 +27,7 @@ router.put(
   upload.single("avatar"),
   controller.editProfile
 );
+router.get("/verify/:code", controller.verifyEmail);
+router.post("/resend-confirmation-code", controller.resendConfirmationCode);
 
 module.exports = router;
