@@ -7,6 +7,7 @@ var logger = require("morgan");
 var postsRouter = require("./routes/PostsRoute");
 var messageRouter = require("./routes/MessageRoute");
 var accountRouter = require("./routes/AccountRoute");
+var commentRouter = require("./routes/CommentRoute");
 
 var app = express();
 
@@ -21,7 +22,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/api/", accountRouter);
-app.use("/api/post", postsRouter);
+app.use("/api/posts", postsRouter);
+app.use("/api/comment", commentRouter);
 app.use("/api/chat", messageRouter);
 
 // catch 404 and forward to error handler

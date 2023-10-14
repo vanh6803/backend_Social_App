@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-const controller = require("../controllers/PostsController");
+const controller = require("../controllers/CommentController");
 const multer = require("multer");
 const { CloudinaryStorage } = require("multer-storage-cloudinary");
 const { cloudinary } = require("../config/SetupClouldinary");
@@ -8,22 +8,24 @@ const { cloudinary } = require("../config/SetupClouldinary");
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: "ASSAngular",
+    folder: "comment",
     format: "png",
   },
 });
 
 const upload = multer({ storage });
 
-router.get("/", controller.getAllPosts);
-router.get("/get-for-user/:uid", controller.getForUser);
-router.get("/detail-posts/:postsId", controller.detailPosts);
+router.get("/:idPosts", controller.getCommentForPosts);
 router.post(
-  "/create-new-posts/:uid",
+  "/add/:idPosts/:uid",
   upload.single("image"),
-  controller.createPosts
+  controller.createComment
 );
-router.put("/update-posts/:uid/:postsId", controller.updatePosts);
-router.delete("/delete-posts/:uid/:postsId", controller.deletePosts);
+router.put(
+  "/update/:idPosts/:uid/:commentId",
+  upload.single("image"),
+  controller.updateComment
+);
+router.delete("/delete/:idPosts/:uid/:commentId", controller.deleteComment);
 
 module.exports = router;
